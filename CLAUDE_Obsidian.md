@@ -1,6 +1,6 @@
 # Claude VObS — Obsidian 端
 
-> 这是 Claude VObS（Claude + VSCode + Obsidian + System）的 Obsidian 端 CLAUDE.md。
+> 这是 Claude VObS（V 和 S 取自 VSCode，Ob 取自 Obsidian）的 Obsidian 端 CLAUDE.md。
 > 路径中的 `<你的 Obsidian vault 路径>` 需替换为你自己的 vault 实际路径。
 
 ## 用户身份
@@ -198,7 +198,7 @@
 
 ## 关联系统
 
-本 vault 是 Claude VObS（Claude + VSCode + Obsidian + System）的 Obsidian 端。三端分工：
+本 vault 是 Claude VObS（V 和 S 取自 VSCode，Ob 取自 Obsidian）的 Obsidian 端。三端分工：
 
 | 端点 | 角色 | CLAUDE.md |
 |------|------|-----------|

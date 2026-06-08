@@ -10,7 +10,7 @@
 
 ## What is this?
 
-Claude VObS (**V**SCode + **Ob**sidian + **S**ystem) is a personal AI operating system. It doesn't build a new app — it layers conventions on top of Claude Code, VSCode, and Obsidian so the same AI switches roles automatically based on context:
+Claude VObS — **V** and **S** from VSCode, **Ob** from Obsidian — is a personal AI operating system. It doesn't build a new app — it layers conventions on top of Claude Code, VSCode, and Obsidian so the same AI switches roles automatically based on context:
 
 ```
 VSCode (Engineer)       Obsidian (Editor)        Phone (PA)

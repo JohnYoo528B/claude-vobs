@@ -9,7 +9,7 @@ tags:
 
 # System Design Principles
 
-> A comprehensive architectural overview of Claude VObS (Claude + VSCode + Obsidian + System). Read this before modifying system rules.
+> A comprehensive architectural overview of Claude VObS (V and S from VSCode, Ob from Obsidian). Read this before modifying system rules.
 
 ---
 

@@ -9,7 +9,7 @@ tags:
 
 # 系统设计原则
 
-> Claude VObS（Claude + VSCode + Obsidian + System）的全景架构说明。修改系统规则前，先读这里。
+> Claude VObS（V 和 S 取自 VSCode，Ob 取自 Obsidian）的全景架构说明。修改系统规则前，先读这里。
 
 ---
 

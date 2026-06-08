@@ -10,7 +10,7 @@
 
 ## 这是什么？
 
-Claude VObS（**V**SCode + **Ob**sidian + **S**ystem）是一套个人 AI 操作系统。它不新建 App——只在 Claude Code、VSCode、Obsidian 之上叠加一层规则，让同一个 AI 在不同场景自动切换角色：
+Claude VObS——**V** 和 **S** 取自 VSCode，**Ob** 取自 Obsidian——是一套个人 AI 操作系统。它不新建 App——只在 Claude Code、VSCode、Obsidian 之上叠加一层规则，让同一个 AI 在不同场景自动切换角色：
 
 ```
 VSCode (工程师)          Obsidian (编辑)          手机 (秘书)

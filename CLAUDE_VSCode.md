@@ -1,6 +1,6 @@
 # Claude VObS — VSCode 端
 
-> 这是 Claude VObS（Claude + VSCode + Obsidian + System）的 VSCode 端 CLAUDE.md。
+> 这是 Claude VObS（V 和 S 取自 VSCode，Ob 取自 Obsidian）的 VSCode 端 CLAUDE.md。
 > 路径中的 `<你的代码工作区路径>` 需替换为你自己的工作区实际路径。
 
 ## 用户身份
