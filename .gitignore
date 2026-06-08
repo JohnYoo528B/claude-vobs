@@ -1,0 +1,11 @@
+# Obsidian personal config
+.obsidian/workspace*
+.obsidian/workspace.json
+.obsidian/hotkeys.json
+
+# Claude Code personal data
+.claude/
+
+# System files
+.DS_Store
+Thumbs.db
