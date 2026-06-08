@@ -3,8 +3,8 @@
 > **零编程基础的人，搭建的个人 AI 操作系统。**
 > AI 知识管理工具的自托管替代方案 — 基于 Claude Code + Obsidian，零行手写代码。
 
+[![Version](https://img.shields.io/badge/version-v3.5-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-active-brightgreen.svg)]()
 
 ---
 

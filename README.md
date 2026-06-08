@@ -3,8 +3,8 @@
 > **A personal AI operating system built by a non-programmer.**
 > Self-hosted alternative to AI knowledge management tools — powered by Claude Code, Obsidian, and zero coding experience.
 
+[![Version](https://img.shields.io/badge/version-v3.5-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-active-brightgreen.svg)]()
 
 ---
 
