@@ -1,0 +1,6 @@
+{
+  "env": {
+    "ANTHROPIC_API_KEY": "sk-ant-xxx-替换为你的APIKey"
+  },
+  "hooks": {}
+}
