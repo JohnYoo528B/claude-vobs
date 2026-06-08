@@ -101,9 +101,9 @@ du -sh <你的 Obsidian vault 路径>/ <你的 Obsidian vault 路径>/.obsidian/
 
 ### 文件命名
 
-`<版本号>版本-<YYYYMMDD>.md`
+`v<版本号>版本-<YYYYMMDDHHMM>.md`
 
-示例：`3.0版本-20260608.md`
+示例：`v3.0版本-202606080255.md`
 
 ### 写入位置
 
