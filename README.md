@@ -1,6 +1,6 @@
 # Claude VObS
 
-> **A personal AI operating system built by a non-programmer.**
+> **A personal AI operating system, built by a non-programmer.**
 > A set of rules that turns Claude Code into a three-terminal assistant — managing notes, writing code, and capturing ideas on the go. Pure Markdown, zero lines of hand-written code.
 
 [![Version](https://img.shields.io/badge/version-v4.5-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
@@ -17,6 +17,44 @@
 - **Downstream propagation table**: 22 "change X → update Y" rules consolidated into one table
 - **Quantitative judgment criteria**: Fatal conditions + high-weight conditions + magnitude classification, replacing AI subjective judgment
 - **Feedback loop closure**: All four open items from the v4.4 audit moved from "identified" to "implemented"
+
+---
+
+## Why I built this
+
+I'm a former film director with zero programming background — can't write a single line of code, even Git was taught to me by AI.
+
+My day bounces between three terminals: **Obsidian** for notes and knowledge, **VSCode** for AI-assisted coding and quantitative analysis, and my **phone** for capturing ideas on the go. Every AI conversation on each terminal started from scratch — no idea who I was, what I was working on, or how I preferred things done.
+
+Every existing solution had the same flaw: **they optimize one point, not the whole system**. Note tools handle notes. Code tools handle code. None of them say: "same memory, same AI, different roles based on context."
+
+I wasn't looking for a new app. I needed a set of conventions layered on top of the tools I already used — giving the AI different behavioral roles across three terminals, one shared memory, and intent-based routing from natural language to the right execution pipeline.
+
+That's Claude VObS. Built entirely through vibe coding — describing what I want in plain language, letting AI handle everything. From v1.0 to v4.5, every iteration solved a real pain point: first "the AI doesn't remember me," then "phone captures don't connect to Obsidian," then "I don't know what actually changed when I wrap up a session."
+
+---
+
+## How I use it daily
+
+This system isn't theoretical — it's used every day. Here's the rhythm:
+
+### ☀️ Morning
+Open Obsidian → AI runs 8 health checks automatically → tells me what needs attention. Unread resources? Reminded. Inbox piling up? Flagged.
+
+### 📱 During the day
+- **Phone capture**: Idea hits me on the street → text "note: 3 reasons to buy ETH tomorrow" via messaging app → lands in Obsidian inbox automatically
+- **VSCode coding**: Say "new project poker strategy backtest" → AI scaffolds the project, creates a dev log. The log file appears in Obsidian simultaneously
+- **Obsidian search**: Say "find my supply chain bottleneck analysis" → AI searches both vault notes and chat memory concurrently, presents results from both
+
+### 🌙 Evening
+- **Clean inbox**: Say "clean inbox" → AI analyzes each item, proposes classification, I confirm
+- **Update history**: Say "update history" → AI scans all changes made today, generates a version record
+- **Remember**: Say "remember" → AI saves the session summary to the handoff file, auto-loaded next session
+
+### 📅 Weekly
+**Wrap up**: Say "wrap up" → AI uses quantitative criteria to determine change magnitude, picks the right path, updates history + user guide + publishes to GitHub if warranted
+
+Each scene takes one sentence. No memorized commands — natural language works.
 
 ---
 
@@ -39,19 +77,6 @@ Write code / run data    Manage notes / archive   Quick capture / search
          archive │ draft-cleanup │ system-watch
 ```
 
-### What can it do?
-
-It's not "a note tool + a code tool glued together." It's **one system, one memory, switching roles automatically**:
-
-```
-Text & notes ────────→ Code & analysis ────────→ Vibe-coding
-Knowledge management    Data processing           Build full projects
-Journal · Inbox        Quantitative analysis      Games · Tools
-Reading notes          Automation scripts         Web apps
-```
-
-From "note down: buy milk tomorrow" to "build me a stock backtesting system" — same memory, same AI.
-
 ### Why not just use existing tools?
 
 <table>
@@ -66,6 +91,134 @@ From "note down: buy milk tomorrow" to "build me a stock backtesting system" —
 The core difference: other tools do notes OR code. VObS does both, and the AI remembers who you are, what you're working on, and how you like things done — because the three-layer memory persists across sessions, projects, and terminals.
 
 **The person who built this can't code.** Everything was done via vibe coding — describing what they want in plain language and letting AI handle the implementation.
+
+---
+
+## Obsidian Vault Architecture
+
+This is the heart of the system — not "how to install," but "what's the thinking behind it." Installation takes 2 minutes. Understanding the design lets you see why it works the way it does.
+
+### 1. Three-Layer Content Architecture
+
+```
+Inbox/  ────────→  Study & Logs/  ────────→  Output/
+(entry)            (processing)              (delivery)
+```
+
+Content is organized by **maturity**, not file type.
+
+| Layer | Folder | What goes there | How to tell |
+|-------|--------|-----------------|-------------|
+| Entry | `～草稿箱/` (inbox) | Fleeting ideas, external links, phone captures | Not yet processed |
+| Processing | `1主题研究/` (deep study) | Judgments, methods, frameworks after deep reading | "Think → write" output |
+| Processing | `2日志与笔记/` (logs) | Trade records, dev logs, daily notes | "Do → log" output |
+| Delivery | `3工作与产出/` (output) | Finished deliverables | Done, shippable |
+
+**Flow is one-way**: content enters through the inbox → gets processed → becomes either your own analysis (deep study) or a finished deliverable (output). External materials (papers, GitHub projects, articles) all enter through the inbox. The AI won't auto-file external content into study folders — crossing that boundary requires human digestion.
+
+### 2. MOC Mechanism
+
+```
+Physical location ≠ browsing entry point
+```
+
+Traditional note tools have a problem: notes filed in folders → one note, one folder → cross-domain content gets lost.
+
+VObS solution: **folders handle storage, MOCs handle discovery**.
+
+| Concept | Role | Example |
+|---------|------|---------|
+| Folder | Physical storage location | `Finance/strategy-backtests/` |
+| MOC (Map of Content) | Browsing entry point | `Finance.md`, wiki-linking to notes in that folder |
+
+A note about "quantitative strategies" lives physically in `Finance/` but gets linked from both `Finance.md` and `Tech&AI.md`. Cross-domain notes don't get swallowed by a single category.
+
+MOC files are maintained by both human and AI. When the AI writes a note, it automatically checks whether to add it to existing MOCs, asking the user when unsure. When a new topic accumulates 3+ notes, a new MOC is created.
+
+### 3. Skill Routing System
+
+Eight Skills = eight independent execution pipelines. CLAUDE.md handles routing, SKILL.md handles execution.
+
+```
+User says natural language
+      │
+      ▼
+  CLAUDE.md intent routing table (14 routes)
+      │
+      ▼
+  Skill execution pipeline (each Skill is a standalone file, ~/.claude/skills/)
+      │
+      ▼
+  Results written back to vault or shown to user
+```
+
+| Skill | You say | What happens |
+|-------|---------|--------------|
+| `quick-capture` | "note: buy milk tomorrow" | Raw text saved to inbox |
+| `vault-search` | "find my supply chain analysis" | Concurrent search: vault + chat memory |
+| `dev-log-creator` | "poker project write log" | Dev log auto-generated in Obsidian |
+| `review-dispatcher` | "wrap up" / "update history" | Determines review path → calls review-creator |
+| `review-creator` | (called by dispatcher) | Scans changes → generates history → updates user guide |
+| `archive` | "organize chat into notes" | Chat → structured note in vault |
+| `draft-cleanup` | "clean inbox" | Analyzes each draft → classify/merge/delete |
+| `system-watch` | (runs on startup) | 8 health checks + B-class cron patrol |
+
+**No exact trigger words needed.** Natural expressions like "organize my chat" or "what changed recently" work — the AI matches intent, not keywords.
+
+### 4. Cross-Terminal Collaboration
+
+Three terminals (VSCode, Obsidian, phone) share one memory and one set of rules.
+
+```
+VSCode CLAUDE.md ──── Defines "engineer" behavior
+Obsidian CLAUDE.md ── Defines "editor" behavior
+Shared ~/.claude/ ─── Three-layer memory + eight Skills
+```
+
+The key mechanism — **`project` field**:
+
+```yaml
+project: 01-poker-backtest-20260606
+```
+
+One YAML line solves four problems:
+1. **Cross-terminal correlation**: VSCode project ↔ Obsidian log folder aligned by identical names, no API needed
+2. **Auto-routed logs**: dev-log-creator never writes to the wrong folder
+3. **Cleanable memory**: Project-level memory auto-cleaned on project completion
+4. **Traceable across sessions**: Any log is traceable to its project at any time
+
+### 5. Three-Layer Memory
+
+```
+L1 · Global — System rules shared across all projects
+L2 · Project — Single-project context, loaded on demand, auto-cleaned on completion
+L3 · User — Response style, tone, communication habits
+```
+
+Memory isn't "dump everything together." Content with different lifecycles lives in different layers:
+- L1 stays in context forever (system rules are never deleted)
+- L2 auto-reminds for cleanup on project completion (unused project memory doesn't consume tokens)
+- L3 is independent of projects and system (switching projects doesn't change response style)
+
+### 6. Fault Tolerance
+
+```
+Pre-op Git snapshot → Execute → Failed?
+                              ├─→ Wait 2s → Retry once → Success ✅
+                              └─→ Fail → Write sentinel + degrade →
+                                     Next startup: "N unfinished operations need recovery"
+```
+
+Four resilience layers:
+
+| Layer | What it does | Example |
+|-------|-------------|---------|
+| **Absorb** | Auto-retry on every operation failure | Write fails → wait 2s → retry |
+| **Adapt** | Auto-degrade when vault is unreachable | Content saved to local fallback directory, migrated when vault recovers |
+| **Recover** | Failures are recorded, rollback available | Sentinel file records cause + recovery command, Git snapshot enables instant rollback |
+| **Learn** | Startup self-checks | 8 checks on every launch (sentinels, fallback, todos, health, git, deps, memory conflicts, path alignment) |
+
+All 7 operation pipelines (history records, phone capture, session handoff, dev logs, chat archiving, GitHub release) share this one fault-tolerance rule set. No per-pipeline error handling needed.
 
 ---
 
@@ -228,7 +381,7 @@ The system already has the phone logic built in — `quick-capture` and `vault-s
 
 <table>
 <tr><th>Path</th><th>Requires</th><th>Best for</th></tr>
-<tr><td>🅰️ <b>cc-connect + WeChat</b></td><td>Node.js, always-on PC, WeChat ClawBot</td><td>Full power, chat-like experience</td></tr>
+<tr><td>🅰️ <b>cc-connect + messaging app</b></td><td>Node.js, always-on PC, messaging bot</td><td>Full power, chat-like experience</td></tr>
 <tr><td>🅱️ <b>Claude mobile app</b></td><td>Claude subscription (Pro/Max)</td><td>Simplest, zero config</td></tr>
 <tr><td>🅲 <b>Skip for now</b></td><td>Nothing</td><td>Doesn't affect core VSCode + Obsidian functionality</td></tr>
 </table>
@@ -286,37 +439,29 @@ Detailed steps → [docs/phone-setup-en.md](docs/phone-setup-en.md)
 
 ### What can I do once set up?
 
-- **Write code**: In VSCode, say "新建项目 my-first-project"
+- **Write code**: In VSCode, say "new project my-first-project"
 - **Take notes**: In Obsidian, say "organize today's chat into notes"
-- **Review**: Say "更新历史记录" to generate a system review
-- **Phone capture** (with phone setup): Text "note down: buy milk tomorrow"
-- **Clean inbox**: Say "整理草稿箱"
-- **Search**: Say "找一下 xxx" — searches both vault and chat memory simultaneously
-- **GitHub release**: Say "发布 GitHub 新版本"
+- **Review**: Say "update history" to generate a system review
+- **Phone capture** (with phone setup): Text "note: buy milk tomorrow"
+- **Clean inbox**: Say "clean inbox"
+- **Search**: Say "find xxx" — searches both vault and chat memory simultaneously
+- **GitHub release**: Say "publish GitHub release"
 
-### What's the difference between "存一下" (quick save) and "记忆一下" (remember)?
+### What's the difference between "note down" and "remember"?
 
-"存" = save raw text to inbox (phone quick capture). "记忆" = write a session summary to the handoff file (next session auto-loads context). Completely different purposes.
-
-### Do I need exact trigger words?
-
-No. Natural language like "organize my chat" or "what changed recently" works fine. The AI matches intent, not keywords. It asks if it's unsure.
-
-### What are the README files in each folder?
-
-The self-documenting system — open any core folder and the first file tells you "what this is for, what belongs here, what doesn't." Four READMEs (inbox, deep study, logs, deliverables) form a complete content flow guide. Neither AI nor human needs to read CLAUDE.md to understand folder purposes.
+"Note down" = save raw text to inbox (phone capture). "Remember" = write session summary to handoff file (next session auto-loads). Completely different purposes.
 
 ### What if something breaks?
 
-All operations have unified error handling: fail → wait 2s → retry once → write sentinel + notify. On startup, AI auto-checks sentinels and fallback storage. Say "恢复未完成操作" to retry failed operations. Git safety net snapshots before every write — instant rollback available.
+All operations have unified error handling: fail → wait 2s → retry once → write sentinel + notify. On startup, AI auto-checks sentinels and fallback storage. Say "recover unfinished operations" to retry. Git safety net snapshots before every write — instant rollback available.
 
 ### How do I complete a project?
 
-In VSCode, say "项目完结". AI runs verification → creates summary → marks complete → updates memory. Post-completion fixes (bug patches) auto-append to maintenance log. See [docs/跨端共享规范.md](docs/跨端共享规范.md).
+In VSCode, say "project complete". AI runs verification → creates summary → marks complete → updates memory. Post-completion fixes auto-append to maintenance log. See [docs/跨端共享规范.md](docs/跨端共享规范.md).
 
 ### How do I publish to GitHub?
 
-In Obsidian, say "发布 GitHub 新版本". The 0.5 version threshold is the AI's reminder line (don't nag you) — not your restriction. You release when you want.
+In Obsidian, say "publish GitHub release". The 0.5 version threshold is the AI's reminder line — not your restriction. You release when you want.
 
 ### Stuck?
 
@@ -330,16 +475,16 @@ In Obsidian, say "发布 GitHub 新版本". The 0.5 version threshold is the AI'
 
 ## Key design decisions
 
-- **Three terminals**: Each does what it's best at — Engineer (VSCode), Editor (Obsidian), Secretary (Phone)
-- **Three-layer content architecture**: Inbox (entry) → Deep study / Logs (processing) → Deliverables (shipping), organized by content maturity
-- **Self-documenting structure**: Each folder has its own README — the structure IS the documentation
-- **Three-layer memory**: global → project → user. Auto-clean on project completion
-- **Plain Markdown + conventions**: No database, no API. `project` field + identical folder names
-- **Seven skills**: Pluggable pipelines, natural language triggers. CLAUDE.md routes, SKILL.md executes
-- **Versioned evolution**: Major version (arch restructure) +1, feature +0.1, old versions untouched + mapping tables
+- **Three terminals**: Engineer (VSCode) · Editor (Obsidian) · Secretary (Phone), each does what it's best at
+- **Three-layer content**: Organized by maturity — inbox (entry) → processing → delivery, one-way flow
+- **MOC mechanism**: Physical storage ≠ browsing entry, folders handle location, MOCs handle discovery
+- **Skill routing**: CLAUDE.md routes, SKILL.md executes, natural language intent matching
+- **Three-layer memory**: L1 global → L2 project → L3 user, tiered by lifecycle, auto-clean on project completion
+- **Cross-terminal alignment**: `project` field solves correlation + log routing + memory cleanup + traceability in one line
 - **Four-layer resilience**: Absorb (retry) → Adapt (degrade) → Recover (sentinel + git rollback) → Learn (startup self-check)
+- **Versioned evolution**: Major version +1, feature +0.1, old versions untouched + mapping tables
 
-More in [DESIGN.md](DESIGN.md).
+More in [DESIGN.md](DESIGN.md) — each item above has expanded reasoning, boundary conditions, and trade-off analysis.
 
 ---
 
