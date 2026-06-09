@@ -3,20 +3,20 @@
 > **A personal AI operating system built by a non-programmer.**
 > A set of rules that turns Claude Code into a three-terminal assistant — managing notes, writing code, and capturing ideas on the go. Pure Markdown, zero lines of hand-written code.
 
-[![Version](https://img.shields.io/badge/version-v4.3-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
+[![Version](https://img.shields.io/badge/version-v4.5-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
 
-## 🆕 What's new in v4.3
+## 🆕 What's new in v4.5 (v4.4 + v4.5 cumulative)
 
-- **7 Skills**: Added archive (chat→note archiving), draft-cleanup (inbox cleanup), system-watch (health monitoring)
-- **vault-search rewritten**: Dual-source concurrent search (vault notes + chat memory)
-- **Ready-to-use skeleton**: Four-layer folder structure with built-in READMEs — open vault and you know what goes where
-- **Self-documenting structure**: Each folder's first file explains "what belongs here, what doesn't"
-- **CLAUDE.md slimmed**: 420→376 lines, leaving headroom for future growth
-- **Cross-terminal spec**: Complete project lifecycle (create→develop→complete→maintain)
-- **0.5 release cadence**: AI won't nag you to release every minor version — you release when you want
+- **8 Skills**: Added review-dispatcher — four review entry points merged into one unified engine
+- **system-watch cron patrol**: A-class startup checks + B-class cron patrol every 2 days
+- **3-layer memory standardization**: 27 memory files with full frontmatter coverage, L1/L2/L3 tiered index
+- **Token estimation upgrade + model routing**: Input-turns×2000 + output-bytes×1.5, 3-tier task classification (LIGHT/STANDARD/HEAVY)
+- **Downstream propagation table**: 22 "change X → update Y" rules consolidated into one table
+- **Quantitative judgment criteria**: Fatal conditions + high-weight conditions + magnitude classification, replacing AI subjective judgment
+- **Feedback loop closure**: All four open items from the v4.4 audit moved from "identified" to "implemented"
 
 ---
 
@@ -33,8 +33,9 @@ Write code / run data    Manage notes / archive   Quick capture / search
           Three-Layer Memory (~/.claude/)
          global → project → user
                               │
-               Seven Skills
-  quick-capture │ vault-search │ dev-log-creator │ review-creator
+               Eight Skills
+  quick-capture │ vault-search │ dev-log-creator
+  review-dispatcher → review-creator
          archive │ draft-cleanup │ system-watch
 ```
 
@@ -133,7 +134,7 @@ Rename and place the two files:
 
 ### Step 3: Install skills
 
-Copy all `.md` files from the repo's `skills/` folder (7 total):
+Copy all `.md` files from the repo's `skills/` folder (8 total):
 
 | OS | Path |
 |----|------|
@@ -148,7 +149,8 @@ Final structure:
 ├─ quick-capture.md       ← Phone quick capture
 ├─ vault-search.md        ← Phone vault search (dual-source)
 ├─ dev-log-creator.md     ← Auto-generate dev logs
-├─ review-creator.md      ← System review + version history
+├─ review-dispatcher.md   ← Review unified entry (router)
+├─ review-creator.md      ← System review execution engine
 ├─ archive.md             ← Chat → note archiving
 ├─ draft-cleanup.md       ← Inbox cleanup
 └─ system-watch.md        ← System health monitoring
@@ -249,7 +251,8 @@ Detailed steps → [docs/phone-setup-en.md](docs/phone-setup-en.md)
 │   ├── quick-capture.md     ← Phone quick capture
 │   ├── vault-search.md      ← Phone vault search (dual-source)
 │   ├── dev-log-creator.md   ← Auto-generate dev logs
-│   ├── review-creator.md    ← System review + version history
+│   ├── review-dispatcher.md ← Review unified entry (router)
+│   ├── review-creator.md    ← System review execution engine
 │   ├── archive.md           ← Chat → note archiving
 │   ├── draft-cleanup.md     ← Inbox cleanup
 │   └── system-watch.md      ← System health monitoring
@@ -258,7 +261,11 @@ Detailed steps → [docs/phone-setup-en.md](docs/phone-setup-en.md)
 ├── docs/
 │   ├── phone-setup.md       ← Phone setup guide (Chinese)
 │   ├── phone-setup-en.md    ← Phone setup guide (English)
-│   └── 跨端共享规范.md       ← Cross-terminal spec (Chinese)
+│   ├── 跨端共享规范.md       ← Cross-terminal spec
+│   ├── 下游传播表.md         ← Change propagation rules
+│   ├── 量化判断标准.md       ← Close-session decision engine
+│   ├── memory-frontmatter-标准.md ← Memory field standard
+│   └── 模型路由规则.md       ← 3-tier model routing
 ├── templates/
 │   ├── 通用笔记模板.md       ← Note template
 │   └── MOC模板.md           ← Topic index (MOC) template

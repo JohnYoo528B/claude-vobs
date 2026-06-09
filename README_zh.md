@@ -3,20 +3,20 @@
 > **零编程基础的人，搭建的个人 AI 操作系统。**
 > 一套规则，把 Claude Code 变成能同时管笔记、写代码、手机速记的三端助理。纯 Markdown，零行手写代码。
 
-[![Version](https://img.shields.io/badge/version-v4.3-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
+[![Version](https://img.shields.io/badge/version-v4.5-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
 
-## 🆕 v4.3 更新
+## 🆕 v4.5 更新（v4.4 + v4.5 累积）
 
-- **7 个 Skill**：新增 archive（对话归档）、draft-cleanup（草稿箱清理）、system-watch（系统健康监控）
-- **vault-search 重写**：双源并发搜索（vault 笔记 + 对话记忆）
-- **开箱即用骨架**：四层文件夹自带 README，打开 vault 就知道每层放什么
-- **自说明体系**：每个文件夹第一个文件解释「放什么、不放什么」
-- **CLAUDE.md 瘦身**：420→376 行，为未来留出空间
-- **跨端共享规范**：完整项目生命周期（新建→开发→完结→完结后维护）
-- **0.5 发布节奏**：AI 不会再每小版本就催你发布——你说发就发
+- **8 个 Skill**：新增 review-dispatcher（回顾统一入口），四个回顾入口合并为一个引擎
+- **system-watch 定时巡检**：A 类启动时检测 + B 类 cron 每 2 天自动巡检
+- **三层记忆标准化**：27 个 memory 文件 frontmatter 全覆盖，L1/L2/L3 三层分组索引
+- **Token 估算升级 + 模型路由**：输入轮数×2000 + 输出字节×1.5，三档任务分级（LIGHT/STANDARD/HEAVY）
+- **下游传播表**：22 条"改 X → 更新 Y"规则收拢到一张表
+- **量化判断标准**：致命条件 + 高权重条件 + 量级判定，替换 AI 主观判断
+- **反馈闭环关闭**：v4.4 评审报告揭示的四项开放项全部从"已识别"推进到"已实现"
 
 ---
 
@@ -33,8 +33,9 @@ VSCode (工程师)          Obsidian (编辑)          手机 (秘书)
               三层记忆（~/.claude/）
          global → project → user
                               │
-              七个 Skill
-  quick-capture │ vault-search │ dev-log-creator │ review-creator
+              八个 Skill
+  quick-capture │ vault-search │ dev-log-creator
+  review-dispatcher → review-creator
          archive │ draft-cleanup │ system-watch
 ```
 
@@ -133,7 +134,7 @@ git clone https://github.com/JohnYoo528B/claude-vobs.git
 
 ### 第三步：安装 Skill
 
-把仓库 `skills/` 下的所有 `.md` 文件复制到（7 个）：
+把仓库 `skills/` 下的所有 `.md` 文件复制到（8 个）：
 
 | 系统 | 路径 |
 |------|------|
@@ -148,7 +149,8 @@ git clone https://github.com/JohnYoo528B/claude-vobs.git
 ├─ quick-capture.md       ← 手机快速捕捉
 ├─ vault-search.md        ← 手机搜索笔记
 ├─ dev-log-creator.md     ← 自动生成开发日志
-├─ review-creator.md      ← 系统回顾
+├─ review-dispatcher.md   ← 回顾统一入口（分流器）
+├─ review-creator.md      ← 系统回顾执行引擎
 ├─ archive.md             ← 对话→笔记存档
 ├─ draft-cleanup.md       ← 草稿箱清理
 └─ system-watch.md        ← 系统健康监控
@@ -249,7 +251,8 @@ AI 开始建文件夹 = 系统跑通。
 │   ├── quick-capture.md     ← 手机快速捕捉
 │   ├── vault-search.md      ← 手机搜索笔记（双源并发）
 │   ├── dev-log-creator.md   ← 自动生成开发日志
-│   ├── review-creator.md    ← 系统回顾 + 版本历史
+│   ├── review-dispatcher.md ← 回顾统一入口（分流器）
+│   ├── review-creator.md    ← 系统回顾执行引擎
 │   ├── archive.md           ← 对话→笔记存档
 │   ├── draft-cleanup.md     ← 草稿箱清理
 │   └── system-watch.md      ← 系统健康监控
@@ -258,7 +261,11 @@ AI 开始建文件夹 = 系统跑通。
 ├── docs/
 │   ├── phone-setup.md       ← 手机端设置指南
 │   ├── phone-setup-en.md    ← Phone setup guide
-│   └── 跨端共享规范.md       ← Obsidian↔VSCode 跨端规则
+│   ├── 跨端共享规范.md       ← Obsidian↔VSCode 跨端规则
+│   ├── 下游传播表.md         ← 改 X → 更新 Y 规则
+│   ├── 量化判断标准.md       ← 收工判定引擎
+│   ├── memory-frontmatter-标准.md ← Memory 字段规范
+│   └── 模型路由规则.md       ← 三档任务分级
 ├── templates/
 │   ├── 通用笔记模板.md       ← 新建笔记模板
 │   └── MOC模板.md           ← 新建主题索引模板
@@ -328,7 +335,7 @@ AI 开始建文件夹 = 系统跑通。
 - **自说明体系**：每个文件夹自带 README，结构本身就是文档
 - **三层记忆**：global → project → user，项目完结自动清理
 - **纯 Markdown + 命名约定**：无数据库、无 API，`project` 字段 + 同名文件夹对齐
-- **七个 Skill**：可插拔执行管道，自然语言触发。CLAUDE.md 路由，SKILL.md 执行
+- **八个 Skill**：可插拔执行管道，自然语言触发。回顾入口统一分流（dispatcher → creator）
 - **版本化演进**：大版本（架构重组）+1，功能新增 +0.1，旧版原文不动 + 末尾对照表
 - **容错四层**：吸收（重试）→ 适应（降级）→ 恢复（哨兵+Git回滚）→ 学习（启动自检）
 

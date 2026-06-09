@@ -30,21 +30,21 @@ tags:
 │         global ──→ project ──→ user              │
 │         (cross-project) (per-project) (personal)  │
 │                          │                        │
-│              SEVEN SKILLS                          │
+│              EIGHT SKILLS                          │
 │  quick-capture │ vault-search │ dev-log-creator   │
-│    review-creator │ archive │ draft-cleanup       │
-│              │ system-watch                       │
+│  review-dispatcher → review-creator               │
+│    archive │ draft-cleanup │ system-watch         │
 └──────────────────────────────────────────────────┘
 ```
 
 **Data flows**:
 
 - VSCode writes code → `dev-log-creator` → Obsidian dev log
-- Obsidian changes architecture → `review-creator` → system history
+- Obsidian changes architecture → `review-dispatcher` → `review-creator` → system history
 - Phone message → `quick-capture` / `vault-search` → Obsidian vault
 - Chat archive → `archive` → Obsidian notes
 - Inbox overflow → `draft-cleanup` → clean & categorize
-- System health → `system-watch` → five startup checks
+- System health → `system-watch` → startup A-checks + B-class cron patrol
 - Cross-system alignment via `project` frontmatter field + identical folder names
 
 ---
@@ -86,7 +86,7 @@ The design principle externalized: **the structure IS the documentation**.
 | **Self-documenting structure** | Each folder has its own README | The structure IS the documentation. Open folder → know what belongs |
 | **Three-layer memory** | global → project → user | `scope` field distinguishes layers. Project-level memory cleanable on completion |
 | **Cross-system alignment** | `project` field + identical folder names | Pure naming convention. No API, no database. Mechanical matching, no AI guessing |
-| **Skill pipeline** | 7 Skills, natural language trigger routing | CLAUDE.md = routing table (single source of truth). SKILL.md = execution manual |
+| **Skill pipeline** | 8 Skills, natural language trigger routing | CLAUDE.md = routing table (single source of truth). SKILL.md = execution manual |
 | **Versioned evolution** | Semantic versioning + archival preservation | Minor fixes merged into current version. Old archives untouched + mapping tables |
 | **Single source of truth** | Each type of info has one authority | Trigger routing → CLAUDE.md, execution steps → SKILL.md, cross-terminal rules → cross-terminal spec |
 
@@ -121,7 +121,7 @@ Rules for a specific project → project
 Personal preferences        → user
 ```
 
-Each layer tagged with `scope` frontmatter field. Loaded with priority: global → project → user.
+Each layer tagged with `scope` frontmatter field. Loaded with priority: global → project → user. MEMORY.md uses L1/L2/L3 three-tier index grouping (equivalent to directory isolation with zero migration cost). All 27 memory files have `scope` + `last-reviewed` root-level standardization.
 
 ### Structural Isomorphism
 
@@ -155,10 +155,10 @@ How it grows ──────→  Evolution logic (how to record change, avoid
 
 | Logic Layer | Rating | Notes |
 |--------|:--:|------|
-| Interaction | ⭐⭐⭐⭐ | 16 intent routes + fuzzy matching + 3-tier priority. Natural language, not exact keywords |
-| Business | ⭐⭐⭐⭐⭐ | 7 Skills with clear boundaries. Each pipeline has full execution steps, edge cases, error handling |
+| Interaction | ⭐⭐⭐⭐ | 14 intent routes + fuzzy matching + 3-tier priority (v4.4: #3-#5 merged into unified entry). Natural language, not exact keywords |
+| Business | ⭐⭐⭐⭐⭐ | 8 Skills with clear boundaries. Each pipeline has full execution steps, edge cases, error handling |
 | Data | ⭐⭐⭐⭐⭐ | `project` field auto-validation; 3-layer memory with scope routing; dual-write session handoff; `arch-changes.jsonl` structured VSCode→Obsidian pipeline |
-| **Resilience** | ⭐⭐⭐ | 8 pipeline sentinel coverage + degraded local cache + startup auto-check + Git safety net. Auto-repair loop not yet closed |
+| **Resilience** | ⭐⭐⭐ | 8 pipeline sentinel coverage + degraded local cache + startup auto-check + Git safety net + B-class cron patrol. Auto-repair loop not yet closed |
 | Evolution | ⭐⭐⭐⭐⭐ | Semantic versioning + archival preservation + `last-reviewed` staleness detection + periodic review reminders. Complete self-iteration loop |
 
 ---
@@ -176,10 +176,11 @@ How it grows ──────→  Evolution logic (how to record change, avoid
 
 ### 6.2 Open Feedback Loop Items
 
-- **Active monitoring**: `system-watch` performs 5 checks: log silence, inbox backlog, broken links, memory redundancy, memory staleness
-- **Auto-repair**: Low-risk problems could be auto-fixed + notified (pending)
-- **Redundancy detection**: Cross-layer memory conflict detection integrated into `system-watch`
-- **Staleness detection**: `last-reviewed` version markers fully deployed; dual-track detection via `system-watch` + `review-creator`
+- **Active monitoring** ✅: `system-watch` A-class at startup + B-class cron patrol (every 2 days from v4.5), covering 7 checks: log silence, inbox backlog, broken links, memory redundancy, memory staleness, review reminders, cross-layer memory conflict detection
+- **Auto-repair** 🟡: Low-risk problems could be auto-fixed + notified (v4.5 discussed, pending execution boundary decision)
+- **Redundancy detection** ✅: Cross-layer memory conflict detection integrated into `system-watch` check #7 (from v4.5)
+- **Staleness detection** ✅: `last-reviewed` version markers fully deployed across 27 memory files; dual-track detection via `system-watch` + `review-creator`
+- **Token optimization** ✅: Estimation upgraded to input-turns×2000 + output-bytes×1.5; model routing 3-tier (LIGHT/STANDARD/HEAVY, from v4.5)
 
 ---
 
@@ -226,7 +227,7 @@ Checklist before modifying system rules:
 
 | Limitation | Impact | Direction |
 |------|------|---------|
-| Resilience loop not closed | Pipeline breaks require human trigger words to recover | Periodic auto-retry + escalation |
+| Resilience loop not closed | Pipeline breaks require human trigger words to recover. v4.5 added system-watch cron patrol for active detection, but auto-repair still pending execution boundary decision | Periodic auto-retry + escalation |
 | Single-user design | No multi-user isolation or permissions | Not needed short-term; requires architecture upgrade for multi-user |
 | Cross-terminal sync via naming | `project` field auto-corrected, but folder name mismatches still need manual fix | Extend auto-validation to folder names |
 | Hard-coded paths | Manual placeholder replacement needed when switching machines | Consider config file for centralized path management |
