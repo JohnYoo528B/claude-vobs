@@ -3,8 +3,20 @@
 > **A personal AI operating system built by a non-programmer.**
 > A set of rules that turns Claude Code into a three-terminal assistant — managing notes, writing code, and capturing ideas on the go. Pure Markdown, zero lines of hand-written code.
 
-[![Version](https://img.shields.io/badge/version-v4.0-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
+[![Version](https://img.shields.io/badge/version-v4.3-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+---
+
+## 🆕 What's new in v4.3
+
+- **7 Skills**: Added archive (chat→note archiving), draft-cleanup (inbox cleanup), system-watch (health monitoring)
+- **vault-search rewritten**: Dual-source concurrent search (vault notes + chat memory)
+- **Ready-to-use skeleton**: Four-layer folder structure with built-in READMEs — open vault and you know what goes where
+- **Self-documenting structure**: Each folder's first file explains "what belongs here, what doesn't"
+- **CLAUDE.md slimmed**: 420→376 lines, leaving headroom for future growth
+- **Cross-terminal spec**: Complete project lifecycle (create→develop→complete→maintain)
+- **0.5 release cadence**: AI won't nag you to release every minor version — you release when you want
 
 ---
 
@@ -21,8 +33,9 @@ Write code / run data    Manage notes / archive   Quick capture / search
           Three-Layer Memory (~/.claude/)
          global → project → user
                               │
-               Four Skills
+               Seven Skills
   quick-capture │ vault-search │ dev-log-creator │ review-creator
+         archive │ draft-cleanup │ system-watch
 ```
 
 ### What can it do?
@@ -120,7 +133,7 @@ Rename and place the two files:
 
 ### Step 3: Install skills
 
-Copy the `.md` files from the repo's `skills/` folder (3 core + 1 advanced):
+Copy all `.md` files from the repo's `skills/` folder (7 total):
 
 | OS | Path |
 |----|------|
@@ -132,10 +145,13 @@ Create `.claude` or `skills` folders if they don't exist. Windows: `.claude` is 
 Final structure:
 ```
 ~/.claude/skills/
-├─ quick-capture.md       ← Core: phone quick capture
-├─ vault-search.md        ← Core: phone vault search
-├─ dev-log-creator.md     ← Core: auto-generate dev logs
-└─ review-creator.md      ← Advanced: system review (can skip for now)
+├─ quick-capture.md       ← Phone quick capture
+├─ vault-search.md        ← Phone vault search (dual-source)
+├─ dev-log-creator.md     ← Auto-generate dev logs
+├─ review-creator.md      ← System review + version history
+├─ archive.md             ← Chat → note archiving
+├─ draft-cleanup.md       ← Inbox cleanup
+└─ system-watch.md        ← System health monitoring
 ```
 
 ---
@@ -153,22 +169,24 @@ In VSCode: `Ctrl+Shift+H` for global find-and-replace.
 
 ### Step 5: Create Obsidian folder structure
 
-Create these folders in your vault (at minimum the first three):
+Create these folders in your vault. Each comes with a built-in README explaining what belongs there:
 
 ```
 your-vault\
-├─ _系统管理\
-├─ 00草稿箱\
-│   └─ 手机暂存\          ← for phone capture, can defer
-├─ 0VibeCoding开发日志\
-│   └─ _全局规范\
-├─ 1学习笔记\
-├─ 2工作文档\
-├─ 3投资记录\
-├─ 4创作灵感\
-├─ 5其他知识\
-└─ 模板\
+├─ CLAUDE.md                     ← Renamed from CLAUDE_Obsidian.md
+├─ _系统管理\                    ← System management (specs, history, health)
+├─ ～草稿箱\                     ← Unified inbox (ideas, external resources, phone captures)
+│   ├─ README.md                 ← Built-in: explains what goes here
+│   └─ 手机暂存\
+├─ 1主题研究\                    ← Deep reading outputs (think → write)
+│   └─ README.md                 ← Built-in: judgment criteria + MOC usage
+├─ 2日志与笔记\                  ← Process records (do → log)
+│   └─ README.md                 ← Built-in: difference from 1主题研究
+└─ 3工作与产出\                  ← Deliverables (done → ship)
+    └─ README.md                 ← Built-in: when to put things here
 ```
+
+> The four-layer architecture: inbox (entry) → deep study / logs (processing) → deliverables (shipping). Content flows one way, each layer has its own README.
 
 ---
 
@@ -186,7 +204,7 @@ your-vault\
 }
 ```
 
-> Get an API key at [console.anthropic.com](https://console.anthropic.com/). Claude subscription users can skip this — the subscription quota works directly.
+> Get an API key at [console.anthropic.com](https://console.anthropic.com/). Claude subscription users can skip this.
 
 ---
 
@@ -228,38 +246,36 @@ Detailed steps → [docs/phone-setup-en.md](docs/phone-setup-en.md)
 ├── CLAUDE_VSCode.md         ← VSCode terminal rules
 ├── CLAUDE_Obsidian.md       ← Obsidian terminal rules
 ├── skills/
-│   ├── quick-capture.md     ← Core skill: phone capture
-│   ├── vault-search.md      ← Core skill: phone search
-│   ├── dev-log-creator.md   ← Core skill: dev logs
-│   └── review-creator.md    ← Advanced skill: system review
+│   ├── quick-capture.md     ← Phone quick capture
+│   ├── vault-search.md      ← Phone vault search (dual-source)
+│   ├── dev-log-creator.md   ← Auto-generate dev logs
+│   ├── review-creator.md    ← System review + version history
+│   ├── archive.md           ← Chat → note archiving
+│   ├── draft-cleanup.md     ← Inbox cleanup
+│   └── system-watch.md      ← System health monitoring
 ├── DESIGN.md                ← System design principles
 ├── DESIGN_zh.md             ← System design (Chinese)
 ├── docs/
 │   ├── phone-setup.md       ← Phone setup guide (Chinese)
-│   └── phone-setup-en.md    ← Phone setup guide (English)
-└── 模板/
-    └── 通用笔记模板.md
+│   ├── phone-setup-en.md    ← Phone setup guide (English)
+│   └── 跨端共享规范.md       ← Cross-terminal spec (Chinese)
+├── templates/
+│   ├── 通用笔记模板.md       ← Note template
+│   └── MOC模板.md           ← Topic index (MOC) template
+├── ～草稿箱/                 ← Unified inbox (with README)
+│   └── README.md
+├── 1主题研究/                ← Deep reading (with README + MOC template)
+│   ├── README.md
+│   └── MOC模板.md
+├── 2日志与笔记/              ← Process records (with README)
+│   └── README.md
+└── 3工作与产出/              ← Deliverables (with README)
+    └── README.md
 ```
 
 ---
 
 ## FAQ
-
-### Where is `~/.claude/`?
-
-| Windows | Mac | Linux |
-|---------|-----|-------|
-| `C:\Users\<username>\.claude\` | `/Users/<username>/.claude/` | `/home/<username>/.claude/` |
-
-Not sure of your username? Type `%USERPROFILE%` into File Explorer's address bar.
-
-### How do I get an API key?
-
-[console.anthropic.com](https://console.anthropic.com/) → sign up → add funds ($5 min) → API Keys → create. Claude subscription users don't need a separate key.
-
-### Do I really need Python and Git?
-
-Yes, both. Python is the default language for vibe-coding — even if you don't write code today, your projects will need it. Git is the foundation for version control that VSCode integrates with.
 
 ### What can I do once set up?
 
@@ -267,6 +283,33 @@ Yes, both. Python is the default language for vibe-coding — even if you don't 
 - **Take notes**: In Obsidian, say "organize today's chat into notes"
 - **Review**: Say "更新历史记录" to generate a system review
 - **Phone capture** (with phone setup): Text "note down: buy milk tomorrow"
+- **Clean inbox**: Say "整理草稿箱"
+- **Search**: Say "找一下 xxx" — searches both vault and chat memory simultaneously
+- **GitHub release**: Say "发布 GitHub 新版本"
+
+### What's the difference between "存一下" (quick save) and "记忆一下" (remember)?
+
+"存" = save raw text to inbox (phone quick capture). "记忆" = write a session summary to the handoff file (next session auto-loads context). Completely different purposes.
+
+### Do I need exact trigger words?
+
+No. Natural language like "organize my chat" or "what changed recently" works fine. The AI matches intent, not keywords. It asks if it's unsure.
+
+### What are the README files in each folder?
+
+The self-documenting system — open any core folder and the first file tells you "what this is for, what belongs here, what doesn't." Four READMEs (inbox, deep study, logs, deliverables) form a complete content flow guide. Neither AI nor human needs to read CLAUDE.md to understand folder purposes.
+
+### What if something breaks?
+
+All operations have unified error handling: fail → wait 2s → retry once → write sentinel + notify. On startup, AI auto-checks sentinels and fallback storage. Say "恢复未完成操作" to retry failed operations. Git safety net snapshots before every write — instant rollback available.
+
+### How do I complete a project?
+
+In VSCode, say "项目完结". AI runs verification → creates summary → marks complete → updates memory. Post-completion fixes (bug patches) auto-append to maintenance log. See [docs/跨端共享规范.md](docs/跨端共享规范.md).
+
+### How do I publish to GitHub?
+
+In Obsidian, say "发布 GitHub 新版本". The 0.5 version threshold is the AI's reminder line (don't nag you) — not your restriction. You release when you want.
 
 ### Stuck?
 
@@ -280,11 +323,14 @@ Yes, both. Python is the default language for vibe-coding — even if you don't 
 
 ## Key design decisions
 
-- **Three terminals**: Each does what it's best at. No bloated all-in-one.
-- **Three-layer memory**: global → project → user. Auto-clean on project completion.
-- **Plain Markdown + conventions**: No database, no API. `project` field + identical folder names.
-- **Four skills**: Self-contained pipelines, natural language triggers. CLAUDE.md routes, SKILL.md executes.
-- **Versioned evolution**: Old versions untouched; mapping tables bridge concepts.
+- **Three terminals**: Each does what it's best at — Engineer (VSCode), Editor (Obsidian), Secretary (Phone)
+- **Three-layer content architecture**: Inbox (entry) → Deep study / Logs (processing) → Deliverables (shipping), organized by content maturity
+- **Self-documenting structure**: Each folder has its own README — the structure IS the documentation
+- **Three-layer memory**: global → project → user. Auto-clean on project completion
+- **Plain Markdown + conventions**: No database, no API. `project` field + identical folder names
+- **Seven skills**: Pluggable pipelines, natural language triggers. CLAUDE.md routes, SKILL.md executes
+- **Versioned evolution**: Major version (arch restructure) +1, feature +0.1, old versions untouched + mapping tables
+- **Four-layer resilience**: Absorb (retry) → Adapt (degrade) → Recover (sentinel + git rollback) → Learn (startup self-check)
 
 More in [DESIGN.md](DESIGN.md).
 

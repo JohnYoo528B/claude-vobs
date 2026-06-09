@@ -3,8 +3,20 @@
 > **零编程基础的人，搭建的个人 AI 操作系统。**
 > 一套规则，把 Claude Code 变成能同时管笔记、写代码、手机速记的三端助理。纯 Markdown，零行手写代码。
 
-[![Version](https://img.shields.io/badge/version-v4.0-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
+[![Version](https://img.shields.io/badge/version-v4.3-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+---
+
+## 🆕 v4.3 更新
+
+- **7 个 Skill**：新增 archive（对话归档）、draft-cleanup（草稿箱清理）、system-watch（系统健康监控）
+- **vault-search 重写**：双源并发搜索（vault 笔记 + 对话记忆）
+- **开箱即用骨架**：四层文件夹自带 README，打开 vault 就知道每层放什么
+- **自说明体系**：每个文件夹第一个文件解释「放什么、不放什么」
+- **CLAUDE.md 瘦身**：420→376 行，为未来留出空间
+- **跨端共享规范**：完整项目生命周期（新建→开发→完结→完结后维护）
+- **0.5 发布节奏**：AI 不会再每小版本就催你发布——你说发就发
 
 ---
 
@@ -21,8 +33,9 @@ VSCode (工程师)          Obsidian (编辑)          手机 (秘书)
               三层记忆（~/.claude/）
          global → project → user
                               │
-              四个 Skill
+              七个 Skill
   quick-capture │ vault-search │ dev-log-creator │ review-creator
+         archive │ draft-cleanup │ system-watch
 ```
 
 ### 能做什么？
@@ -120,7 +133,7 @@ git clone https://github.com/JohnYoo528B/claude-vobs.git
 
 ### 第三步：安装 Skill
 
-把仓库 `skills/` 下的 `.md` 文件复制到（3 个核心 + 1 个进阶）：
+把仓库 `skills/` 下的所有 `.md` 文件复制到（7 个）：
 
 | 系统 | 路径 |
 |------|------|
@@ -132,10 +145,13 @@ git clone https://github.com/JohnYoo528B/claude-vobs.git
 最终结构：
 ```
 ~/.claude/skills/
-├─ quick-capture.md       ← 核心：手机快速捕捉
-├─ vault-search.md        ← 核心：手机搜索笔记
-├─ dev-log-creator.md     ← 核心：自动生成开发日志
-└─ review-creator.md      ← 进阶：系统回顾（初期可跳过，用到再装）
+├─ quick-capture.md       ← 手机快速捕捉
+├─ vault-search.md        ← 手机搜索笔记
+├─ dev-log-creator.md     ← 自动生成开发日志
+├─ review-creator.md      ← 系统回顾
+├─ archive.md             ← 对话→笔记存档
+├─ draft-cleanup.md       ← 草稿箱清理
+└─ system-watch.md        ← 系统健康监控
 ```
 
 ---
@@ -153,22 +169,24 @@ VSCode 里 `Ctrl+Shift+H` 全局替换。
 
 ### 第五步：创建 Obsidian 文件夹结构
 
-在 Obsidian vault 里建以下文件夹（至少建前三个）：
+在 Obsidian vault 里建以下文件夹。仓库已自带各文件夹的 README.md（打开文件夹就能看到说明）：
 
 ```
 你的 vault\
-├─ _系统管理\
-├─ 00草稿箱\
-│   └─ 手机暂存\          ← 手机端用，可后建
-├─ 0VibeCoding开发日志\
-│   └─ _全局规范\
-├─ 1学习笔记\
-├─ 2工作文档\
-├─ 3投资记录\
-├─ 4创作灵感\
-├─ 5其他知识\
-└─ 模板\
+├─ CLAUDE.md                     ← 从仓库 CLAUDE_Obsidian.md 重命名
+├─ _系统管理\                    ← 系统管理（设计规范、历史记录、健康监控）
+├─ ～草稿箱\                     ← 统一入口（临时想法、外部资源、手机暂存）
+│   ├─ README.md                 ← 已自带：解释什么丢进来
+│   └─ 手机暂存\
+├─ 1主题研究\                    ← 深读产出（想→写）
+│   └─ README.md                 ← 已自带：判断标准和 MOC 用法
+├─ 2日志与笔记\                  ← 过程记录（做→记）
+│   └─ README.md                 ← 已自带：跟主题研究的区别
+└─ 3工作与产出\                  ← 成品交付
+    └─ README.md                 ← 已自带：什么时候放这里
 ```
+
+> 四层架构的设计逻辑：从草稿箱（入口）→ 主题研究/日志（加工）→ 工作产出（交付）。每层一个 README，打开就知道放什么。
 
 ---
 
@@ -228,38 +246,36 @@ AI 开始建文件夹 = 系统跑通。
 ├── CLAUDE_VSCode.md         ← VSCode 端规则
 ├── CLAUDE_Obsidian.md       ← Obsidian 端规则
 ├── skills/
-│   ├── quick-capture.md     ← 核心 Skill：手机快速捕捉
-│   ├── vault-search.md      ← 核心 Skill：手机搜索笔记
-│   ├── dev-log-creator.md   ← 核心 Skill：自动生成开发日志
-│   └── review-creator.md    ← 进阶 Skill：系统回顾
-├── DESIGN_zh.md             ← 系统设计原则
+│   ├── quick-capture.md     ← 手机快速捕捉
+│   ├── vault-search.md      ← 手机搜索笔记（双源并发）
+│   ├── dev-log-creator.md   ← 自动生成开发日志
+│   ├── review-creator.md    ← 系统回顾 + 版本历史
+│   ├── archive.md           ← 对话→笔记存档
+│   ├── draft-cleanup.md     ← 草稿箱清理
+│   └── system-watch.md      ← 系统健康监控
+├── DESIGN_zh.md             ← 系统设计原理
 ├── DESIGN.md                ← System design (English)
 ├── docs/
 │   ├── phone-setup.md       ← 手机端设置指南
-│   └── phone-setup-en.md    ← Phone setup guide
-└── 模板/
-    └── 通用笔记模板.md
+│   ├── phone-setup-en.md    ← Phone setup guide
+│   └── 跨端共享规范.md       ← Obsidian↔VSCode 跨端规则
+├── templates/
+│   ├── 通用笔记模板.md       ← 新建笔记模板
+│   └── MOC模板.md           ← 新建主题索引模板
+├── ～草稿箱/                 ← 统一入口（自带 README）
+│   └── README.md
+├── 1主题研究/                ← 深读产出（自带 README + MOC 模板）
+│   ├── README.md
+│   └── MOC模板.md
+├── 2日志与笔记/              ← 过程记录（自带 README）
+│   └── README.md
+└── 3工作与产出/              ← 成品交付（自带 README）
+    └── README.md
 ```
 
 ---
 
 ## 常见问题
-
-### `~/.claude/` 在哪？
-
-| Windows | Mac | Linux |
-|---------|-----|-------|
-| `C:\Users\<用户名>\.claude\` | `/Users/<用户名>/.claude/` | `/home/<用户名>/.claude/` |
-
-不确定用户名？文件管理器地址栏输入 `%USERPROFILE%` 回车。
-
-### API Key 怎么获取？
-
-[console.anthropic.com](https://console.anthropic.com/) 注册 → 充值（最低 $5）→ API Keys → 创建。Claude 订阅用户不需要单独配 Key。
-
-### 不写代码，Python 和 Git 还需要吗？
-
-都需要。Python 是系统默认编程语言，即使你暂时不写代码，后续 vibe-coding 项目依赖它。Git 是版本管理基础，VSCode 集成依赖它。
 
 ### 装完了能做什么？
 
@@ -267,6 +283,33 @@ AI 开始建文件夹 = 系统跑通。
 - **记笔记**：Obsidian 里说"整理今天的对话成笔记"
 - **做回顾**：说"更新历史记录"
 - **手机暂存**（配好手机端后）：手机上发"记一下 明天买牛奶"
+- **清理草稿箱**：说"整理草稿箱"
+- **搜索**：说"找一下 xxx"，同时搜索 vault 笔记和对话记忆
+- **GitHub 发布**：说"发布 GitHub 新版本"
+
+### "存一下"和"记忆一下"有什么区别？
+
+"存" = 原文暂存到草稿箱（手机端快速捕捉），"记忆" = 写会话摘要到接力文件（下次对话自动引用）。两个字不交叉。
+
+### 触发词一定要原样打吗？
+
+不需要。说"帮我整理下对话""最近动了什么"这类自然表达，AI 按意图自动判断该走哪条流程。拿不准时会反问确认。
+
+### 每个文件夹里的 README 是什么？
+
+自说明体系——打开任意核心文件夹，第一个文件解释「这是什么、什么该放这里、什么不该」。四个 README（草稿箱 + 1主题研究 + 2日志与笔记 + 3工作与产出）形成完整的内容流引导。AI 和人都不需要读 CLAUDE.md 就能理解文件夹用途。
+
+### 系统断了怎么办？
+
+所有操作有统一错误处理：失败→等 2 秒→重试 1 次→写哨兵 + 告知。启动时 AI 自动检查哨兵和降级暂存。说"恢复未完成操作"重试失败项。Git 安全网在每次写操作前自动快照，可随时回滚。
+
+### 项目完结怎么操作？
+
+在 VSCode 端说"项目完结"。AI 自动跑验证→创建回顾总结→标记完结→更新记忆。完结后的小修（Bug 修复）直接改，AI 自动追加维护记录。详见 [docs/跨端共享规范.md](docs/跨端共享规范.md)。
+
+### GitHub 发布怎么操作？
+
+在 Obsidian 端说"发布 GitHub 新版本"。0.5 版本阈值是 AI 的提醒线（别催你），不是你的限制——你说发就发。
 
 ### 遇到问题？
 
@@ -280,11 +323,14 @@ AI 开始建文件夹 = 系统跑通。
 
 ## 核心设计
 
-- **三端分工**：每端只做擅长的事，不做大而全
+- **三端分工**：每端只做擅长的事——工程师（VSCode）、编辑（Obsidian）、秘书（手机）
+- **三层内容架构**：草稿箱（入口）→ 主题研究/日志（加工）→ 工作产出（交付），按内容成熟度分层
+- **自说明体系**：每个文件夹自带 README，结构本身就是文档
 - **三层记忆**：global → project → user，项目完结自动清理
 - **纯 Markdown + 命名约定**：无数据库、无 API，`project` 字段 + 同名文件夹对齐
-- **四个 Skill**：自包含管道，自然语言触发。CLAUDE.md 路由，SKILL.md 执行
-- **版本化演进**：旧版本不动，末尾对照表链接新旧概念
+- **七个 Skill**：可插拔执行管道，自然语言触发。CLAUDE.md 路由，SKILL.md 执行
+- **版本化演进**：大版本（架构重组）+1，功能新增 +0.1，旧版原文不动 + 末尾对照表
+- **容错四层**：吸收（重试）→ 适应（降级）→ 恢复（哨兵+Git回滚）→ 学习（启动自检）
 
 详见 [DESIGN_zh.md](DESIGN_zh.md)。
 

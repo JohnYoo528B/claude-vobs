@@ -5,7 +5,7 @@ description: Records code-level changes (new features, bug fixes, concepts learn
 
 # 开发日志创建器
 
-触发词路由见 CLAUDE.md → "两个 skill 的分工" 表（权威来源）。本文件为格式与流程的唯一执行规范。
+触发词路由见 CLAUDE.md → "统一意图路由表"（权威来源）。本文件为格式与流程的唯一执行规范。
 
 ## 适用场景
 
@@ -120,7 +120,7 @@ description: Records code-level changes (new features, bug fixes, concepts learn
 ### 写入位置
 
 ```
-<你的 Obsidian vault 路径>/0VibeCoding开发日志/<项目名>/<与源码同名>.md
+E:/2_Notes/.../2日志与笔记/VibeCoding开发日志/<项目名>/<与源码同名>.md
 ```
 
 ### 写入规则
