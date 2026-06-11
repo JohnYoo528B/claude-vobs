@@ -99,6 +99,19 @@ Phase 8: 自动提醒 [PATH_D only]
 
 ---
 
+## 反馈检查（自动，会1d 最小闭环）
+
+> 每次执行前自动运行。不阻断主流程，失败静默跳过。
+
+1. 读取 `_系统管理/系统健康/ai-output-tracker.md`，找 `Skill = review-creator` 的最新一条产出记录
+2. 如有记录且该记录未被反馈检查过：
+   - 跑 `git diff <基线commit> HEAD -- "<产出文件>"` 看用户是否修改了上次的历史记录/使用指南
+   - 无修改 → 在 tracker 的「反馈检查日志」表记一行，跳过
+   - 有修改 → 读 diff，分析修改模式 → 写入 `memory/feedback-review-creator.md` → tracker 记日志
+3. 继续正常执行流程
+
+---
+
 ## Phase 0：预检（所有路径）
 
 ### 0a. VSCode 端变化检测 `[if check_vscode_side]`
@@ -553,6 +566,12 @@ tags:
 6. **不归档旧指南**：指南版本号不变，原地修改
 
 📍 追加模式完成 → checkpoint {phase:6}
+
+### 登记产出追踪器
+
+写入完成后，在 `_系统管理/系统健康/ai-output-tracker.md` 的「产出记录」表追加（至少包含版本历史文件，使用指南有更新则也追加）：
+
+| # | <时间> | review-creator | <版本历史文件路径> | `git rev-parse HEAD` |
 
 ---
 

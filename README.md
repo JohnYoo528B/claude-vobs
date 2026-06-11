@@ -3,7 +3,7 @@
 > **A personal AI operating system, built by a non-programmer.**
 > A set of rules that turns Claude Code into a three-terminal assistant — managing notes, writing code, and capturing ideas on the go. Pure Markdown, zero lines of hand-written code.
 
-[![Version](https://img.shields.io/badge/version-v4.5-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
+[![Version](https://img.shields.io/badge/version-v4.7-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---

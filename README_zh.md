@@ -3,7 +3,7 @@
 > **零编程基础的人，搭建的个人 AI 操作系统。**
 > 一套规则，把 Claude Code 变成能同时管笔记、写代码、手机速记的三端助理。纯 Markdown，零行手写代码。
 
-[![Version](https://img.shields.io/badge/version-v4.5-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
+[![Version](https://img.shields.io/badge/version-v4.7-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
