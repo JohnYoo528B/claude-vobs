@@ -3,7 +3,7 @@
 ## 用户身份
 
 - **零编程基础**：不懂任何编程语言，不会 Git，不会命令行
-- **角色定位**：产品经理 + QA 测试员，不是程序员
+- **角色定位**：产品经理 + QA 测试员 + 元探索者。不只是用 AI 写代码，也主动总结与 AI 沟通的方法论和框架使用心得，沉淀为可复用的经验
 - **工作方式**：Vibe Coding — 用自然语言描述需求，AI 负责所有技术实现
 - **沟通语言**：中文
 
@@ -26,6 +26,31 @@
 - **写操作需确认**：创建/修改/删除文件、git 操作、安装包 — 都需要用户看到并确认
 - **先读再写**：修改代码前先读一遍，理解现有逻辑
 - **不推 git**：除非用户明确说"推送"或"提交"，否则不做任何 git 写操作。说"提交"时自动执行四步工作流（commit+push+日志+README），见 memory `auto-change-log.md`。VObS 系统项目（`00-Claude-VObS-公开版`）例外，git 操作完全由 Obsidian 端触发。
+- **跨端写入后追加 PENDING-CHANGES**：每次跨端写入 Obsidian vault（MCP 爬取结果、开发日志等），同步追加一行到 vault 的 `_系统管理/PENDING-CHANGES.md`。格式 `- YYYY-MM-DD | 来源 | 文件 | 改了什么`。不阻塞主流程，不可跳过。
+
+### 浏览器操控（Playwright MCP）
+
+已配置 `@playwright/mcp`，可以操控 Chromium 浏览器完成网页操作。
+
+**使用方式**：直接说「打开 xx 网站，做 xx」。Claude 会自动启动浏览器执行。
+
+**典型场景**：
+- 网页信息提取：「打开这个页面，把文章内容摘下来」
+- 网页操作：「打开淘宝搜 xx，按价格排序」
+- 跨端写入：「打开 xx 网页，把内容存到 Obsidian 草稿箱」
+
+**跨端写入规则**（⚠️ 硬性约束）：
+- MCP 爬取/提取的所有外部内容，**必须**写入 `～草稿箱/`，禁止直接写入 `1主题研究/` 或其他内容文件夹
+- 写入路径：`<你的 Obsidian vault 路径>\～草稿箱\`
+- frontmatter 必填：`source`（原始链接）、`status: unread`
+- 后续由 Obsidian 端走正常消化流程：草稿箱 → 整理 → 升级到 1主题研究/
+- 关联规范：Obsidian 端 `_系统管理/设计规范/笔记格式/外部信息摄入指南.md`
+
+**技术备注**（供 AI 查阅，用户无需关心）：
+- MCP 服务器：`playwright`（npx @playwright/mcp@latest）
+- 配置文件：`C:\Users\<你的用户名>\.claude.json` → `projects.<vault>.mcpServers.playwright`
+- 浏览器引擎：Chromium（`C:\Users\<你的用户名>\AppData\Local\ms-playwright\chromium-1223`）
+- 配置时间：2026-06-13
 
 ## 项目结构约定
 
@@ -125,7 +150,7 @@ e:\6_CodeData\
 ### Token 追踪
 
 每次对话接近尾声（用户表示任务完成、准备关闭、或自然结束）时，AI 追加一条记录到：
-`C:\Users\yrh\.claude\projects\e--6-CodeData\token-usage.jsonl`
+`C:\Users\<你的用户名>\.claude\projects\e--6-CodeData\token-usage.jsonl`
 
 格式：`YYYY-MM-DD HH:MM | <涉及项目名> | <估算token数> | <备注>`
 
@@ -203,15 +228,15 @@ AI 行为记忆存储在 `~/.claude/projects/` 下。定期提醒用户备份该
 | 端点 | 角色 | CLAUDE.md |
 |------|------|-----------|
 | **VSCode** | 工程师（写代码） | 本文件 |
-| **Obsidian** | 编辑（管笔记） | `E:\2_Notes\0GithubLibraryForObsidian\John-sDataForObsidian\CLAUDE.md` |
+| **Obsidian** | 编辑（管笔记） | `<你的 Obsidian vault 路径>\CLAUDE.md` |
 | **手机** | 秘书（快速存取） | 通过 cc-connect 路由到 skill |
 
-- Obsidian vault 路径：`E:\2_Notes\0GithubLibraryForObsidian\John-sDataForObsidian\`
+- Obsidian vault 路径：`<你的 Obsidian vault 路径>\`
 - 开发日志规范 → Obsidian 端 `_系统管理/设计规范/_全局规范/备忘-项目规范与开发日志流程.md`
 - 系统设计全景 → Obsidian 端 `_系统管理/设计规范/核心设计规范/系统设计原理.md`
 - **跨端共享规范（唯一权威）** → Obsidian 端 `_系统管理/设计规范/核心设计规范/跨端共享规范.md`（GitHub 发布、README 规范、触发词边界、project 字段等所有跨端规则）
 
-> **路径权威来源**：本文件为代码区路径（`e:\6_CodeData\`、`~/.claude/` 等）的唯一权威。Obsidian vault 路径以 `E:\2_Notes\0GithubLibraryForObsidian\John-sDataForObsidian\CLAUDE.md` 为准。各自维护，互不覆盖，避免同一路径在两处重复定义导致不一致。
+> **路径权威来源**：本文件为代码区路径（`e:\6_CodeData\`、`~/.claude/` 等）的唯一权威。Obsidian vault 路径以 `<你的 Obsidian vault 路径>\CLAUDE.md` 为准。各自维护，互不覆盖，避免同一路径在两处重复定义导致不一致。
 > ⚠️ 以上 Obsidian 端路径为缓存引用，方便日常查阅。唯一权威来源为 Obsidian 端 CLAUDE.md 的 §笔记库结构。启动时自动执行路径对齐校验（流程见跨端共享规范 §五），不一致自动修正。
 
 ## 环境信息

@@ -90,7 +90,7 @@ downstream_propagate: false
 ### 执行流程
 
 1. **先检查 VSCode 端变化**：
-   - `ls -lt C:/Users/yrh/.claude/projects/e--6-CodeData/memory/` → 对比最新历史记录时间戳
+   - `ls -lt ~/.claude/projects/e--6-CodeData/memory/` → 对比最新历史记录时间戳
    - 深读新文件 → 检查 arch-changes.jsonl 未消费条目
    - 有 VSCode 变化 → 一并纳入
 2. **调用 review-creator**，传入参数包
@@ -189,7 +189,7 @@ Step 4: 查 [[量化判断标准]] §二「量级判定」
 
 - **仅提醒，不自动执行。** 用户说「更新历史记录」后才进入 PATH_A
 - 提醒逻辑的完整实现见 system-watch SKILL.md 第 6 项
-- last-review.txt 位置：VSCode 端 `C:/Users/yrh/.claude/projects/e--6-CodeData/last-review.txt`（Obsidian 端可选同步副本）
+- last-review.txt 位置：VSCode 端 `~/.claude/projects/e--6-CodeData/last-review.txt`（Obsidian 端可选同步副本）
 
 ---
 

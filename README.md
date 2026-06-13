@@ -3,16 +3,24 @@
 > **A personal AI operating system, built by a non-programmer.**
 > A set of rules that turns Claude Code into a three-terminal assistant — managing notes, writing code, and capturing ideas on the go. Pure Markdown, zero lines of hand-written code.
 
-[![Version](https://img.shields.io/badge/version-v4.7-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
+[![Version](https://img.shields.io/badge/version-v5.0-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
 
-## 🆕 What's new in v4.5 (v4.4 + v4.5 cumulative)
+## 🆕 What's new in v5.0 (v4.6-v5.0 cumulative)
 
-- **8 Skills**: Added review-dispatcher — four review entry points merged into one unified engine
-- **system-watch cron patrol**: A-class startup checks + B-class cron patrol every 2 days
-- **3-layer memory standardization**: 27 memory files with full frontmatter coverage, L1/L2/L3 tiered index
+v5.0 is the settlement of the v4.x era — not the version with the most features, but the one that riveted every joint.
+
+**Six "skip=bug" hard constraints:** Startup checks, post-operation procedures, change tracking, output registration, sentinel checks, and confirmation mechanisms — all six core rules upgraded from "AI should do this" to "AI has no choice."
+
+**Four-layer architecture:** Judgment Engine → Self-Organization → External Connection → Practical Interaction. Independently converged with Hermes Agent (170K GitHub stars) — same answer to the same problem, opposite implementation paths.
+
+**cc-connect self-healing:** Mobile reliability upgraded from "pray it doesn't break" to "auto-detect + auto-recover."
+
+**New documents:** SETUP.md (step-by-step deployment) + FIRST-STEPS.md (3-minute onboarding).
+
+**v4.6-v4.9 highlights:** MCP browser control + Hermes benchmarking (v4.9), PC→phone notification scripting (v4.8), mobile notification routing (v4.7), README management refactor (v4.6).
 - **Token estimation upgrade + model routing**: Input-turns×2000 + output-bytes×1.5, 3-tier task classification (LIGHT/STANDARD/HEAVY)
 - **Downstream propagation table**: 22 "change X → update Y" rules consolidated into one table
 - **Quantitative judgment criteria**: Fatal conditions + high-weight conditions + magnitude classification, replacing AI subjective judgment

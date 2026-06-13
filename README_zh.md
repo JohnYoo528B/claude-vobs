@@ -3,20 +3,37 @@
 > **零编程基础的人，搭建的个人 AI 操作系统。**
 > 一套规则，把 Claude Code 变成能同时管笔记、写代码、手机速记的三端助理。纯 Markdown，零行手写代码。
 
-[![Version](https://img.shields.io/badge/version-v4.7-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
+[![Version](https://img.shields.io/badge/version-v5.0-blue.svg)](https://github.com/JohnYoo528B/claude-vobs/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
 
-## 🆕 v4.5 更新（v4.4 + v4.5 累积）
+## 🆕 v5.0 更新（v4.6-v5.0 累积，4 天 5 个版本）
 
-- **8 个 Skill**：新增 review-dispatcher（回顾统一入口），四个回顾入口合并为一个引擎
-- **system-watch 定时巡检**：A 类启动时检测 + B 类 cron 每 2 天自动巡检
-- **三层记忆标准化**：27 个 memory 文件 frontmatter 全覆盖，L1/L2/L3 三层分组索引
-- **Token 估算升级 + 模型路由**：输入轮数×2000 + 输出字节×1.5，三档任务分级（LIGHT/STANDARD/HEAVY）
-- **下游传播表**：22 条"改 X → 更新 Y"规则收拢到一张表
-- **量化判断标准**：致命条件 + 高权重条件 + 量级判定，替换 AI 主观判断
-- **反馈闭环关闭**：v4.4 评审报告揭示的四项开放项全部从"已识别"推进到"已实现"
+v5.0 是 v4.x 时代的结算版本——不是加了最多功能，而是把所有骨架打上了铆钉。
+
+**六项「跳过=bug」级硬性约束：**
+启动检查、操作收尾、改动记录、产出登记、哨兵检查、确认机制——六条核心规则
+全部从"AI 应该做"升级为"AI 没有选择余地"。这是系统从"写了规则"到"规则被强制执行"
+的最后一步。
+
+**四层架构确立：**
+判定引擎→自我组织→外部连接→实操侧重。与 GitHub 17 万星项目 Hermes Agent
+对标——同一个问题的同一个答案，方向完全相反（Hermes 用 Python 代码搭，
+VObS 用 Markdown 规则搭）。
+
+**cc-connect 自愈：**
+手机端从"祈祷别断"升级为"自动检测+自愈"——手机端可靠性不再是运气问题。
+
+**新增文档：**
+- `SETUP_zh.md` / `SETUP.md` — 手把手部署指南
+- `FIRST-STEPS_zh.md` / `FIRST-STEPS.md` — 3 分钟首次使用引导
+
+**v4.6-v4.9 关键演进：**
+- v4.9 MCP 浏览器操控 + Hermes 对标审计
+- v4.8 PC→手机通知脚本化
+- v4.7 手机通知路由上线（路由表新增📱通知列）
+- v4.6 README 管理模型重构（聚合窗口→关联提醒）
 
 ---
 
@@ -30,7 +47,7 @@
 
 我不是在找一个新 App。我需要的是给已有的工具叠加一套规则——让 AI 在三端拥有不同的角色、共享同一套记忆、按自然语言意图自动路由到正确的执行管道。
 
-于是有了 Claude VObS。全程 vibe coding——用大白话描述想要什么，AI 负责实现。从 v1.0 到 v4.5，每一次演进都在解决一个真实痛点：第一次是"AI 记不住我"，第二次是"手机存的跟 Obisidian 不连通"，第三次是"收了工不知道到底改了哪些要同步"。
+于是有了 Claude VObS。全程 vibe coding——用大白话描述想要什么，AI 负责实现。从 v1.0 到 v5.0，每一次演进都在解决一个真实痛点。v5.0 更是与 GitHub 17 万星项目 Hermes Agent 殊途同归——同一个问题的同一个答案，两个完全相反的搭建路径。
 
 ---
 
@@ -39,7 +56,7 @@
 这套系统不是为了好看——是每天真的在用。以下是一个典型的使用节奏：
 
 ### ☀️ 早上
-打开 Obsidian → AI 自动跑健康检查（8 项）→ 告诉我有什么要注意。有未读资源？提醒我处理。有草稿积压？提醒我清理。
+打开 Obsidian → AI 自动跑健康检查（10 项）→ 告诉我有什么要注意。有未读资源？提醒我处理。有草稿积压？提醒我清理。
 
 ### 📱 白天
 - **手机存一下**：路上想到点子 → 微信发 `存一下 明天买 ETH 的理由有 3 个` → 自动写入 Obsidian 草稿箱
@@ -144,7 +161,7 @@ MOC 文件是人+AI 共同维护的。AI 写入笔记时自动判断是否需要
 用户说自然语言
       │
       ▼
-  CLAUDE.md 意图路由表（14 条路线）
+  CLAUDE.md 意图路由表（15 条路线）
       │
       ▼
   Skill 执行管道（每个 Skill 一个独立文件，~/.claude/skills/）
@@ -162,7 +179,7 @@ MOC 文件是人+AI 共同维护的。AI 写入笔记时自动判断是否需要
 | `review-creator` | （由 dispatcher 调用） | 扫描改动 → 生成历史记录 → 更新使用指南 |
 | `archive` | "把对话整理成笔记" | 对话 → 结构化笔记存入 vault |
 | `draft-cleanup` | "整理草稿箱" | 逐条分析草稿 → 归类/合并/删除 |
-| `system-watch` | （启动时自动跑） | 8 项健康检查 + B 类 cron 定时巡检 |
+| `system-watch` | （启动时自动跑） | 10 项健康检查 + B 类 cron 定时巡检 |
 
 **不需要精确匹配触发词**。说"帮我整理下对话""最近动了什么"这类自然表达，AI 按意图自动判断该走哪条流程。
 
@@ -217,7 +234,7 @@ L3 · User（个人偏好）     → 回答风格、语气、沟通惯例
 | **吸收** | 每个操作失败自动重试 | 写入失败 → 等 2s → 再试一次 |
 | **适应** | vault 不可访问时自动降级 | 内容暂存到本地 fallback 目录，等恢复后迁移 |
 | **恢复** | 失败有记录有回滚 | 哨兵文件记下失败原因和恢复指令，Git 快照可随时回滚 |
-| **学习** | 启动时自动检查 | 每次启动跑 8 项自检（哨兵/降级/待办/健康/Git/依赖/记忆冲突/路径对齐） |
+| **学习** | 启动时自动检查 | 每次启动跑 10 项自检（哨兵/降级/待办/健康/Git/依赖/记忆冲突/路径对齐/cc-connect 存活/ntfy 通路） |
 
 所有 7 条操作流水线（历史记录、手机捕捉、会话接力、开发日志、对话归档、GitHub 发布）统一走这套容错规则。不需要每条流水线单独处理错误。
 
@@ -255,6 +272,8 @@ L3 · User（个人偏好）     → 回答风格、语气、沟通惯例
 > **"初始化 Claude VObS。我的 Obsidian vault 在 `[填你的 vault 路径]`。请自动完成全部部署：把两个 CLAUDE.md 分别放到代码区和 vault 根目录，把 skills 复制到 ~/.claude/skills/，全局替换所有占位符，在 vault 里建好文件夹结构，复制 settings.example.json 为 settings.json。每步完成后告诉我做了什么。"**
 
 Claude Code 会自己读文件、理解上下文、处理路径差异。遇到问题会解释原因，不会静默失败。
+
+> 📎 详细步骤见 [SETUP_zh.md](SETUP_zh.md)。装完后看 [FIRST-STEPS_zh.md](FIRST-STEPS_zh.md) 3 分钟上手。
 
 ---
 
@@ -382,7 +401,7 @@ AI 开始建文件夹 = 系统跑通。
 
 <table>
 <tr><th>方案</th><th>需要</th><th>适合</th></tr>
-<tr><td>🅰️ <b>cc-connect + 微信</b></td><td>Node.js、电脑常开、微信 ClawBot</td><td>功能最全，微信里像聊天一样用</td></tr>
+<tr><td>🅰️ <b>cc-connect + 微信</b></td><td>Node.js、电脑常开、微信 ClawBot</td><td>功能最全，支持自动检测+自愈</td></tr>
 <tr><td>🅱️ <b>Claude 手机 App</b></td><td>Claude 订阅（Pro/Max）</td><td>最简单，无需额外配置</td></tr>
 <tr><td>🅲 <b>先跳过</b></td><td>无</td><td>不影响 VSCode + Obsidian 核心功能</td></tr>
 </table>
@@ -397,6 +416,10 @@ AI 开始建文件夹 = 系统跑通。
 .
 ├── README_zh.md             ← 你在这里
 ├── README.md                ← English version
+├── SETUP_zh.md              ← 部署指南（中文）
+├── SETUP.md                 ← 部署指南（英文）
+├── FIRST-STEPS_zh.md        ← 首次使用引导（中文）
+├── FIRST-STEPS.md           ← 首次使用引导（英文）
 ├── LICENSE                  ← MIT
 ├── settings.example.json    ← settings.json 模板
 ├── CLAUDE_VSCode.md         ← VSCode 端规则
@@ -417,6 +440,8 @@ AI 开始建文件夹 = 系统跑通。
 │   ├── phone-setup-en.md    ← Phone setup guide
 │   ├── 跨端共享规范.md       ← Obsidian↔VSCode 跨端规则
 │   ├── 下游传播表.md         ← 改 X → 更新 Y 规则
+│   ├── CLAUDE.md行为规则.md   ← AI 行为规则
+│   ├── 会话连续性规范.md       ← 启动检查 + 结束时记忆流程
 │   ├── 量化判断标准.md       ← 收工判定引擎
 │   ├── memory-frontmatter-标准.md ← Memory 字段规范
 │   └── 模型路由规则.md       ← 三档任务分级
@@ -464,6 +489,10 @@ AI 开始建文件夹 = 系统跑通。
 
 在 Obsidian 端说"发布 GitHub 新版本"。0.5 版本阈值是 AI 的提醒线（别催你），不是你的限制——你说发就发。
 
+### 从旧版本升级怎么操作？
+
+`git pull` 拉取最新代码。重新复制 CLAUDE.md 和 skills/ 到对应位置（覆盖旧版）。如果旧版有自己的修改，建议先备份再覆盖。
+
 ### 遇到问题？
 
 1. 检查前置条件是否都满足
@@ -483,6 +512,7 @@ AI 开始建文件夹 = 系统跑通。
 - **三层记忆**：L1 global → L2 project → L3 user，按生命周期分层，项目完结自动清理
 - **跨端对齐**：`project` 字段一句解决跨端关联 + 日志归位 + 记忆清理 + 可追溯
 - **容错四层**：吸收（重试）→ 适应（降级）→ 恢复（哨兵+Git回滚）→ 学习（启动自检）
+- **四层架构**：判定引擎→自我组织→外部连接→实操侧重，与 Hermes Agent（17 万星）殊途同归
 - **版本化演进**：大版本 +1，功能 +0.1，旧版原文不动 + 末尾对照表
 
 详见 [DESIGN_zh.md](DESIGN_zh.md)——以上每一项的背后原理、边界条件、决策取舍都有展开。

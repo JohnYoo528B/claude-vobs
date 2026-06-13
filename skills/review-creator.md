@@ -117,13 +117,13 @@ Phase 8: 自动提醒 [PATH_D only]
 ### 0a. VSCode 端变化检测 `[if check_vscode_side]`
 
 ```bash
-ls -lt C:/Users/yrh/.claude/projects/e--6-CodeData/memory/
+ls -lt ~/.claude/projects/e--6-CodeData/memory/
 ```
 对比最新历史记录/微调的时间戳，如有新文件 → 深读 → 纳入本次。
 
 ### 0b. arch-changes.jsonl 未消费条目 `[所有路径]`
 
-读取 `C:\Users\yrh\.claude\projects\e--6-CodeData\arch-changes.jsonl`，筛选 `consumed: false` 条目。存在则读入，待 Phase 3 处理。
+读取 `~\.claude\projects\e--6-CodeData\arch-changes.jsonl`，筛选 `consumed: false` 条目。存在则读入，待 Phase 3 处理。
 
 ### 0c. 版本号读取 `[所有路径]`
 
@@ -174,7 +174,7 @@ df -h /c/ /e/ /d/
 du -sh e:/6_CodeData/ e:/6_CodeData/*/ 2>/dev/null
 
 # AI 运行数据
-du -sh C:/Users/yrh/.claude/ C:/Users/yrh/.claude/projects/ C:/Users/yrh/.claude/file-history/ C:/Users/yrh/.claude/plans/ C:/Users/yrh/.claude/skills/ C:/Users/yrh/.claude/telemetry/ 2>/dev/null
+du -sh ~/.claude/ ~/.claude/projects/ ~/.claude/file-history/ ~/.claude/plans/ ~/.claude/skills/ ~/.claude/telemetry/ 2>/dev/null
 
 # 知识库（Obsidian Vault）
 du -sh E:/2_Notes/0GithubLibraryForObsidian/John-sDataForObsidian/ E:/2_Notes/0GithubLibraryForObsidian/John-sDataForObsidian/.obsidian/ E:/2_Notes/0GithubLibraryForObsidian/John-sDataForObsidian/.git/ E:/2_Notes/0GithubLibraryForObsidian/John-sDataForObsidian/1主题研究/ E:/2_Notes/0GithubLibraryForObsidian/John-sDataForObsidian/2日志与笔记/ E:/2_Notes/0GithubLibraryForObsidian/John-sDataForObsidian/3工作与产出/ E:/2_Notes/0GithubLibraryForObsidian/John-sDataForObsidian/_系统管理/系统历史记录/ 2>/dev/null
@@ -186,7 +186,7 @@ du -sh E:/2_Notes/0GithubLibraryForObsidian/John-sDataForObsidian/ E:/2_Notes/0G
 
 ## 第三步：统计 Token 用量
 
-1. 读取 **VSCode 端** Token 日志：`C:\Users\yrh\.claude\projects\e--6-CodeData\token-usage.jsonl`
+1. 读取 **VSCode 端** Token 日志：`~\.claude\projects\e--6-CodeData\token-usage.jsonl`
 2. 读取 **Obsidian 端** Token 日志：`E:/2_Notes/0GithubLibraryForObsidian/John-sDataForObsidian/_系统管理/系统健康/token-usage.jsonl`
 3. 两端汇总：筛选近期条目，统计会话数，汇总估算 token
 4. 在「资源状态 → Token」表格中分两端展示（VSCode / Obsidian），再合计
@@ -210,7 +210,7 @@ du -sh E:/2_Notes/0GithubLibraryForObsidian/John-sDataForObsidian/ E:/2_Notes/0G
 
 ### 5a. L2 完结清理（现有逻辑）
 
-1. 读取 `C:\Users\yrh\.claude\projects\e--6-CodeData\memory\MEMORY.md`
+1. 读取 `~\.claude\projects\e--6-CodeData\memory\MEMORY.md`
 2. 找出所有标记 ✅（完结）的项目分组
 3. 对每个完结项目，检查 `memory/` 下是否有 `scope: project` + `project: <该项目>` 的记忆文件
 4. 如有，在后续"架构变更"表格中增加一行提醒：
@@ -222,7 +222,7 @@ du -sh E:/2_Notes/0GithubLibraryForObsidian/John-sDataForObsidian/ E:/2_Notes/0G
 
 ### 5b. L1/L3 过时检测（v4.1 新增）
 
-1. 扫描两端 memory 目录（VSCode: `C:\Users\yrh\.claude\projects\e--6-CodeData\memory/`，Obsidian: `C:\Users\yrh\.claude\projects\E--2-Notes-0GithubLibraryForObsidian-John-sDataForObsidian\memory/`）
+1. 扫描两端 memory 目录（VSCode: `~\.claude\projects\e--6-CodeData\memory/`，Obsidian: `~\.claude\projects\E--2-Notes-0GithubLibraryForObsidian-John-sDataForObsidian\memory/`）
 2. 提取各 .md 文件的 `last-reviewed` frontmatter 字段
 3. 与 `_系统管理/系统健康/VERSION.md` 当前版本号对比
 4. 不一致的 → 在「健康信号」中列出：`🟡 N 个 memory 文件 last-reviewed ≠ vX.X：<文件名>`
@@ -260,7 +260,7 @@ du -sh E:/2_Notes/0GithubLibraryForObsidian/John-sDataForObsidian/ E:/2_Notes/0G
 
 ### 7a. 读取架构变更管道（优先）
 
-1. 读取 `C:\Users\yrh\.claude\projects\e--6-CodeData\arch-changes.jsonl`
+1. 读取 `~\.claude\projects\e--6-CodeData\arch-changes.jsonl`
 2. 筛选 `consumed: false` 的条目
 3. 将这些条目直接填入下方「架构变更」表格（summary → 条目列，before/after → 变更前/变更后列，impact → 原因列）
 4. 如文件不存在或无未消费条目 → 继续 7b
@@ -580,7 +580,7 @@ tags:
 ### 14a. 更新追踪文件
 
 ```bash
-echo "YYYY-MM-DD | 历史记录 | <文件名>" > C:/Users/yrh/.claude/projects/e--6-CodeData/last-review.txt
+echo "YYYY-MM-DD | 历史记录 | <文件名>" > ~/.claude/projects/e--6-CodeData/last-review.txt
 ```
 
 > 两端都写：VSCode 端（上述路径）+ Obsidian vault 可选副本（`_系统管理/系统健康/last-review.txt`）
@@ -614,8 +614,8 @@ echo "YYYY-MM-DD | 历史记录 | <文件名>" > C:/Users/yrh/.claude/projects/e
 
 当 `create_new_version=true` 时（即 PATH_A 新建版本），自动执行：
 
-1. 扫描 Obsidian 端 memory：`C:\Users\yrh\.claude\projects\E--2-Notes-0GithubLibraryForObsidian-John-sDataForObsidian\memory\*.md`
-2. 扫描 VSCode 端 memory：`C:\Users\yrh\.claude\projects\e--6-CodeData\memory\*.md`
+1. 扫描 Obsidian 端 memory：`~\.claude\projects\E--2-Notes-0GithubLibraryForObsidian-John-sDataForObsidian\memory\*.md`
+2. 扫描 VSCode 端 memory：`~\.claude\projects\e--6-CodeData\memory\*.md`
 3. 对两端所有 .md 文件（排除 MEMORY.md 和 memory-template.md），将 `last-reviewed` 字段更新为新版本号（如 `v4.5`）
 4. 更新两端 MEMORY.md 的 `last-reviewed` 为新版本号
 5. 完成后输出：`📝 两端 memory last-reviewed → v<新版本号>（N 个文件）`

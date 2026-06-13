@@ -129,7 +129,7 @@ find ～草稿箱/ -name "*.md" -mtime +7 | wc -l
 **检测逻辑**：把 CLAUDE.md 启动时的回顾提醒逻辑收回 system-watch。
 
 1. 运行 `date "+%u %d"` 获取星期几（1=周一）和日期
-2. 读取 `C:/Users/yrh/.claude/projects/e--6-CodeData/last-review.txt`，提取上次回顾日期
+2. 读取 `~/.claude/projects/e--6-CodeData/last-review.txt`，提取上次回顾日期
 3. 计算距上次回顾的天数
 4. 按以下阈值判断：
 
@@ -146,7 +146,7 @@ find ～草稿箱/ -name "*.md" -mtime +7 | wc -l
 **实现**：
 ```bash
 date "+%u %d"
-cat C:/Users/yrh/.claude/projects/e--6-CodeData/last-review.txt
+cat ~/.claude/projects/e--6-CodeData/last-review.txt
 # 提取日期，计算天数差
 # 判断是否触发以上阈值
 ```
@@ -159,8 +159,8 @@ cat C:/Users/yrh/.claude/projects/e--6-CodeData/last-review.txt
 
 **检测逻辑**：跨端同名 memory 文件的规则内容对比。若同一规则在两端定义不一致，视为冲突。
 
-1. 读取 Obsidian 端 MEMORY.md：`C:\Users\yrh\.claude\projects\E--2-Notes-0GithubLibraryForObsidian-John-sDataForObsidian\memory\MEMORY.md`
-2. 读取 VSCode 端 MEMORY.md：`C:\Users\yrh\.claude\projects\e--6-CodeData\memory\MEMORY.md`
+1. 读取 Obsidian 端 MEMORY.md：`~\.claude\projects\E--2-Notes-0GithubLibraryForObsidian-John-sDataForObsidian\memory\MEMORY.md`
+2. 读取 VSCode 端 MEMORY.md：`~\.claude\projects\e--6-CodeData\memory\MEMORY.md`
 3. 提取两端 memory 索引中的文件名（不含 `.md`），找出同名文件
 4. 对每个同名文件，读取两端版本，对比 frontmatter `scope` 字段和核心规则内容
 5. 判定冲突：
